@@ -61,6 +61,18 @@ const predictiveBudgetingPrompt = ai.definePrompt({
   name: 'predictiveBudgetingPrompt',
   input: {schema: PredictBudgetInputSchema},
   output: {schema: PredictBudgetOutputSchema},
+  config: {
+    safetySettings: [
+      {
+        category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+        threshold: 'BLOCK_NONE',
+      },
+      {
+        category: 'HARM_CATEGORY_HARASSMENT',
+        threshold: 'BLOCK_NONE',
+      },
+    ],
+  },
   prompt: `You are a personal finance advisor. Analyze the following historical spending data and provide a forecast of next month's expenses, as well as suggested budget caps for each category.  The data is provided as a JSON string.
 
 Historical Spending Data:

@@ -35,24 +35,24 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/" legacyBehavior passHref>
-              <SidebarMenuButton asChild isActive={pathname === '/'} tooltip="Dashboard">
+            <Link href="/">
+              <SidebarMenuButton isActive={pathname === '/'} tooltip="Dashboard">
                 <LayoutDashboard />
                 Dashboard
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/transactions" legacyBehavior passHref>
-                <SidebarMenuButton asChild isActive={pathname === '/transactions'} tooltip="Transactions">
+            <Link href="/transactions">
+                <SidebarMenuButton isActive={pathname === '/transactions'} tooltip="Transactions">
                   <Wallet />
                   Transactions
                 </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/goals" legacyBehavior passHref>
-              <SidebarMenuButton asChild isActive={pathname === '/goals'} tooltip="Goals">
+            <Link href="/goals">
+              <SidebarMenuButton isActive={pathname === '/goals'} tooltip="Goals">
                 <Target />
                 Goals
               </SidebarMenuButton>

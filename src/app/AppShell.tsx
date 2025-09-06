@@ -4,23 +4,12 @@
 import { AppSidebar } from "@/components/AppSidebar";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect, useState } from "react";
 
 export default function AppShell({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <SidebarProvider>

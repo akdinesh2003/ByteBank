@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/icons";
 import { usePathname } from 'next/navigation';
+import Link from "next/link";
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -34,22 +35,28 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton href="/" isActive={pathname === '/'} tooltip="Dashboard">
-              <LayoutDashboard />
-              Dashboard
-            </SidebarMenuButton>
+            <Link href="/" legacyBehavior passHref>
+              <SidebarMenuButton asChild isActive={pathname === '/'} tooltip="Dashboard">
+                <LayoutDashboard />
+                Dashboard
+              </SidebarMenuButton>
+            </Link>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton href="/transactions" isActive={pathname === '/transactions'} tooltip="Transactions">
-              <Wallet />
-              Transactions
-            </SidebarMenuButton>
+            <Link href="/transactions" legacyBehavior passHref>
+                <SidebarMenuButton asChild isActive={pathname === '/transactions'} tooltip="Transactions">
+                  <Wallet />
+                  Transactions
+                </SidebarMenuButton>
+            </Link>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton href="/goals" isActive={pathname === '/goals'} tooltip="Goals">
-              <Target />
-              Goals
-            </SidebarMenuButton>
+            <Link href="/goals" legacyBehavior passHref>
+              <SidebarMenuButton asChild isActive={pathname === '/goals'} tooltip="Goals">
+                <Target />
+                Goals
+              </SidebarMenuButton>
+            </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>

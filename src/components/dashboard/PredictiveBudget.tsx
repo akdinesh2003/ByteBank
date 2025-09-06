@@ -1,3 +1,6 @@
+
+'use client';
+
 import {
   Card,
   CardContent,
@@ -10,44 +13,49 @@ import { predictBudget } from '@/ai/flows/predictive-budgeting';
 import { historicalSpending } from '@/lib/data';
 import { PredictiveBudgetChart } from './PredictiveBudgetChart';
 import { BadgeAlert } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-export default async function PredictiveBudget() {
-  let chartData: { category: string; forecast: number; budget: number; }[] = [];
-  let riskyCategories: string[] = [];
+interface ChartData {
+  category: string;
+  forecast: number;
+  budget: number;
+}
 
-  try {
-    const prediction = await predictBudget({ historicalSpendingData: JSON.stringify(historicalSpending) });
-    const forecastedExpenses = JSON.parse(prediction.forecastedExpenses);
-    const suggestedBudgets = JSON.parse(prediction.suggestedBudgetCaps);
+export default function PredictiveBudget() {
+  const [chartData, setChartData] = useState<ChartData[]>([]);
+  const [riskyCategories, setRiskyCategories] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-    chartData = Object.keys(forecastedExpenses).map(key => ({
-      category: key,
-      forecast: forecastedExpenses[key] || 0,
-      budget: suggestedBudgets[key] || 0,
-    }));
+  useEffect(() => {
+    async function fetchPredictions() {
+      try {
+        setIsLoading(true);
+        const prediction = await predictBudget({ historicalSpendingData: JSON.stringify(historicalSpending) });
+        const forecastedExpenses = JSON.parse(prediction.forecastedExpenses);
+        const suggestedBudgets = JSON.parse(prediction.suggestedBudgetCaps);
 
-    riskyCategories = chartData
-      .filter(d => d.forecast > d.budget)
-      .map(d => d.category);
+        const data = Object.keys(forecastedExpenses).map(key => ({
+          category: key,
+          forecast: forecastedExpenses[key] || 0,
+          budget: suggestedBudgets[key] || 0,
+        }));
+        setChartData(data);
 
-  } catch (error) {
-    console.error("Failed to predict budget:", error);
-    // Render a fallback or error state if needed
-  }
-  
-  if (chartData.length === 0) {
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="font-headline">Predictive Budget</CardTitle>
-                <CardDescription>Could not load budget predictions.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p>There was an error fetching the predictive budget data.</p>
-            </CardContent>
-        </Card>
-    )
-  }
+        const risky = data
+          .filter(d => d.forecast > d.budget)
+          .map(d => d.category);
+        setRiskyCategories(risky);
+        setError(null);
+      } catch (err) {
+        console.error("Failed to predict budget:", err);
+        setError("Could not load budget predictions.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPredictions();
+  }, []);
 
   return (
     <Card>
@@ -58,9 +66,19 @@ export default async function PredictiveBudget() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <PredictiveBudgetChart data={chartData} />
+        {isLoading ? (
+          <div className="flex h-[240px] items-center justify-center">
+            <p>Loading predictions...</p>
+          </div>
+        ) : error ? (
+           <div className="flex h-[240px] items-center justify-center">
+            <p className="text-destructive">{error}</p>
+          </div>
+        ) : (
+          <PredictiveBudgetChart data={chartData} />
+        )}
       </CardContent>
-      {riskyCategories.length > 0 && (
+      {!isLoading && !error && riskyCategories.length > 0 && (
          <CardFooter className="flex-col items-start gap-2 text-sm">
           <div className="flex items-center gap-2 font-medium leading-none">
             <BadgeAlert className="h-4 w-4 text-accent" />

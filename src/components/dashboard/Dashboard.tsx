@@ -1,3 +1,4 @@
+
 'use client';
 
 import FinancialHealthScore from "@/components/dashboard/FinancialHealthScore";

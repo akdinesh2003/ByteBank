@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -86,7 +87,14 @@ const predictiveBudgetingPrompt = ai.definePrompt({
 Historical Spending Data:
 {{{historicalSpendingData}}}
 
-Respond with a JSON string containing the forecasted expenses and another JSON string containing the suggested budget caps.
+Based on the historical data, provide a realistic forecast for each category for the next month. Also, suggest a reasonable budget cap for each category that is slightly higher than the forecast to allow for some flexibility.
+
+Respond with a JSON string for 'forecastedExpenses' and another JSON string for 'suggestedBudgetCaps'. Ensure the output is valid JSON.
+For example:
+{
+  "forecastedExpenses": "{\\"Groceries\\":72,\\"Utilities\\":151}",
+  "suggestedBudgetCaps": "{\\"Groceries\\":80,\\"Utilities\\":160}"
+}
 `,
 });
 

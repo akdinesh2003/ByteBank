@@ -1,3 +1,6 @@
+
+'use client'
+
 import {
   Card,
   CardContent,
@@ -7,8 +10,11 @@ import {
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { goals } from '@/lib/data';
+import { useCurrency } from '@/context/CurrencyContext';
 
 export default function GoalTracker() {
+  const { currencySymbol } = useCurrency();
+
   return (
     <Card className="lg:col-span-2">
       <CardHeader>
@@ -29,7 +35,7 @@ export default function GoalTracker() {
                     <span className="font-medium">{goal.name}</span>
                   </div>
                   <span className="font-mono text-sm font-medium">
-                    ${goal.currentAmount.toLocaleString()} / $
+                    {currencySymbol}{goal.currentAmount.toLocaleString()} / {currencySymbol}
                     {goal.targetAmount.toLocaleString()}
                   </span>
                 </div>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,6 +27,7 @@ import { getExpenseCategory } from '@/lib/actions';
 import { useEffect, useState, useTransition } from 'react';
 import { Loader2, Wand2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useCurrency } from '@/context/CurrencyContext';
 
 const formSchema = z.object({
   description: z.string().min(2, {
@@ -48,6 +50,7 @@ export default function AddTransactionForm({ onFinished }: AddTransactionFormPro
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const [suggestedCategory, setSuggestedCategory] = useState<string | null>(null);
+  const { currencySymbol } = useCurrency();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,7 +89,7 @@ export default function AddTransactionForm({ onFinished }: AddTransactionFormPro
     console.log(values);
     toast({
       title: 'Transaction Added',
-      description: `${values.description} for $${values.amount} has been added.`,
+      description: `${values.description} for ${currencySymbol}${values.amount} has been added.`,
     });
     onFinished();
   }

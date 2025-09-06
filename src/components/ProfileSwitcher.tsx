@@ -9,15 +9,19 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { profiles } from "@/lib/data";
 import type { Profile } from "@/lib/types";
 import { ChevronsUpDown } from "lucide-react";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export function ProfileSwitcher() {
   const [selectedProfile, setSelectedProfile] = useState<Profile>(profiles[0]);
+  const { currency, setCurrency } = useCurrency();
 
   return (
     <DropdownMenu>
@@ -60,6 +64,12 @@ export function ProfileSwitcher() {
             {profile.name}
           </DropdownMenuItem>
         ))}
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>Currency</DropdownMenuLabel>
+        <DropdownMenuRadioGroup value={currency} onValueChange={(value) => setCurrency(value as "USD" | "INR")}>
+          <DropdownMenuRadioItem value="USD">USD ($)</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="INR">INR (₹)</DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );

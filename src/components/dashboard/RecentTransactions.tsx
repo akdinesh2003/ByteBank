@@ -25,11 +25,13 @@ import { ArrowUpRight, PlusCircle } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import AddTransactionForm from './AddTransactionForm';
 import { usePathname } from 'next/navigation';
+import { useCurrency } from '@/context/CurrencyContext';
 
 export default function RecentTransactions() {
   const [isSheetOpen, setSheetOpen] = useState(false);
   const pathname = usePathname();
   const isTransactionsPage = pathname === '/transactions';
+  const { currencySymbol } = useCurrency();
 
   const transactionsToShow = isTransactionsPage ? transactions : transactions.slice(0, 5);
 
@@ -92,7 +94,7 @@ export default function RecentTransactions() {
                       : 'text-foreground'
                   }`}
                 >
-                  {transaction.type === 'income' ? '+' : '-'}$
+                  {transaction.type === 'income' ? '+' : '-'}{currencySymbol}
                   {transaction.amount.toFixed(2)}
                 </TableCell>
               </TableRow>

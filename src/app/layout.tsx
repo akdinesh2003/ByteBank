@@ -7,8 +7,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { cn } from '@/lib/utils';
 import { CurrencyProvider } from '@/context/CurrencyContext';
 import AppShell from './AppShell';
-import { useEffect, useState } from 'react';
-
 
 // export const metadata: Metadata = {
 //   title: 'ByteBank X',
@@ -20,12 +18,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isClient, setIsClient] = useState(false)
- 
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -37,7 +29,7 @@ export default function RootLayout({
       </head>
       <body className={cn("font-body antialiased", "min-h-screen bg-background font-sans")}>
         <CurrencyProvider>
-          {isClient ? <AppShell>{children}</AppShell> : null}
+          <AppShell>{children}</AppShell>
         </CurrencyProvider>
         <Toaster />
       </body>

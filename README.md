@@ -83,6 +83,4 @@ In the project directory, you can run:
 
 ## ✍️ Author
 
--   **akdinesh2003** - [GitHub Profile](https://github.com/akdinesh2003)
-
-Feel free to reach out with any questions or feedback!
+-   **akdinesh2003** - https://github.com/akdinesh2003

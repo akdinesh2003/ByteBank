@@ -3,10 +3,8 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from '@/lib/utils';
-import { AppSidebar } from '@/components/AppSidebar';
-import { DashboardHeader } from '@/components/DashboardHeader';
-import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { CurrencyProvider } from '@/context/CurrencyContext';
+import AppShell from './AppShell';
 
 
 export const metadata: Metadata = {
@@ -28,17 +26,9 @@ export default function RootLayout({
       </head>
       <body className={cn("font-body antialiased", "min-h-screen bg-background font-sans")}>
         <CurrencyProvider>
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <div className="flex min-h-screen w-full flex-col">
-                <DashboardHeader />
-                <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-                  {children}
-                </main>
-              </div>
-            </SidebarInset>
-          </SidebarProvider>
+          <AppShell>
+            {children}
+          </AppShell>
         </CurrencyProvider>
         <Toaster />
       </body>

@@ -1,3 +1,6 @@
+
+'use client';
+
 import {
   Sidebar,
   SidebarHeader,
@@ -15,8 +18,11 @@ import {
   CircleHelp,
 } from "lucide-react";
 import { Logo } from "@/components/icons";
+import { usePathname } from 'next/navigation';
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -28,19 +34,19 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton href="#" isActive tooltip="Dashboard">
+            <SidebarMenuButton href="/" isActive={pathname === '/'} tooltip="Dashboard">
               <LayoutDashboard />
               Dashboard
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton href="#" tooltip="Transactions">
+            <SidebarMenuButton href="/transactions" isActive={pathname === '/transactions'} tooltip="Transactions">
               <Wallet />
               Transactions
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton href="#" tooltip="Goals">
+            <SidebarMenuButton href="/goals" isActive={pathname === '/goals'} tooltip="Goals">
               <Target />
               Goals
             </SidebarMenuButton>

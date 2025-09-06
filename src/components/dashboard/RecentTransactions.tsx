@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -23,9 +24,15 @@ import { transactions } from '@/lib/data';
 import { ArrowUpRight, PlusCircle } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import AddTransactionForm from './AddTransactionForm';
+import { usePathname } from 'next/navigation';
 
 export default function RecentTransactions() {
   const [isSheetOpen, setSheetOpen] = useState(false);
+  const pathname = usePathname();
+  const isTransactionsPage = pathname === '/transactions';
+
+  const transactionsToShow = isTransactionsPage ? transactions : transactions.slice(0, 5);
+
 
   return (
     <Card>
@@ -33,7 +40,7 @@ export default function RecentTransactions() {
         <div className="grid gap-2">
           <CardTitle className="font-headline">Transactions</CardTitle>
           <CardDescription>
-            Recent transactions from your accounts.
+            {isTransactionsPage ? 'All of your transactions.' : 'Recent transactions from your accounts.'}
           </CardDescription>
         </div>
         <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
@@ -62,7 +69,7 @@ export default function RecentTransactions() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {transactions.slice(0, 5).map((transaction) => (
+            {transactionsToShow.map((transaction) => (
               <TableRow key={transaction.id}>
                 <TableCell>
                   <div className="font-medium">{transaction.description}</div>
@@ -93,15 +100,19 @@ export default function RecentTransactions() {
           </TableBody>
         </Table>
       </CardContent>
-       <CardFooter>
-        <div className="text-xs text-muted-foreground">
-          Showing <strong>1-5</strong> of <strong>{transactions.length}</strong> transactions
-        </div>
-        <Button size="sm" variant="link" className="ml-auto gap-1">
-            View All
-            <ArrowUpRight className="h-4 w-4" />
-        </Button>
-      </CardFooter>
+       {!isTransactionsPage && (
+        <CardFooter>
+            <div className="text-xs text-muted-foreground">
+            Showing <strong>1-5</strong> of <strong>{transactions.length}</strong> transactions
+            </div>
+            <Button asChild size="sm" variant="link" className="ml-auto gap-1">
+                <a href="/transactions">
+                    View All
+                    <ArrowUpRight className="h-4 w-4" />
+                </a>
+            </Button>
+        </CardFooter>
+       )}
     </Card>
   );
 }
